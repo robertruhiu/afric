@@ -14,18 +14,21 @@ var expressHbs = require('express-handlebars');
 var path = require('path');
 var MongoStore = require('connect-mongo')(session);
 
+
+
+
+
 require('./config/passport')(passport);
-
-
 
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
 
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
+
+
+
 
 
 
@@ -43,8 +46,6 @@ app.use(passport.session()); // persistent login sessions
 app.use(flash()); // use connect-flash for flash messages stored in session
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-
 //Create public directory for views
 app.engine('.hbs', expressHbs());
 app.set('view engine', '.hbs');
@@ -55,7 +56,22 @@ app.use(function (req,res,next) {
 
 });
 
-require('./routes/routes.js')(app, passport);
 
 
-module.exports = app;
+// app.use('/', function(req, res){
+// // 	res.send('Our First Express program!');
+// 	console.log(req.cookies);
+// // 	console.log('================');
+// 	console.log(req.session);
+//  });
+
+require('./routes/routes')(app, passport);
+
+app.listen(process.env.PORT || 8079, function(){
+  console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+});
+
+
+
+
+
